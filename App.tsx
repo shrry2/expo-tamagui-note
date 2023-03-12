@@ -2,9 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
 import { TamaguiProvider, Theme } from 'tamagui';
 import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import config from './tamagui.config';
 import { Main } from './src/Main';
+import { NoteListScreen } from './src/features/list/NoteListScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -20,8 +25,18 @@ export default function App() {
   return (
     <TamaguiProvider config={config}>
       <Theme name={colorScheme === 'dark' ? 'dark' : 'light'}>
-        <Main />
-        <StatusBar style="auto" />
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={NoteListScreen}
+              options={{
+                title: 'Notes',
+              }}
+            />
+          </Stack.Navigator>
+          <StatusBar style="auto" />
+        </NavigationContainer>
       </Theme>
     </TamaguiProvider>
   );
