@@ -1,10 +1,20 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC } from 'react';
-import { Text, YStack } from 'tamagui';
+import { FlatList } from 'react-native';
+import { RouteStackParamList } from '../config/route';
+import { useNotes } from '../datastore/getNotes';
+import { NoteListItem } from './NoteListItem';
 
-export const NoteListScreen: FC = () => {
+type Props = NativeStackScreenProps<RouteStackParamList, 'List'>;
+
+export const NoteListScreen: FC<Props> = ({ navigation }) => {
+  const { data: notes } = useNotes();
+
   return (
-    <YStack>
-      <Text>Note List</Text>
-    </YStack>
+    <FlatList
+      data={notes}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <NoteListItem note={item} />}
+    />
   );
 };
